@@ -1,0 +1,37 @@
+2025-11-16 00:55:03.851 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - Starting RfsGovApplication using Java 24.0.2 with PID 4948 (C:\Users\sajtk\OneDrive\Рабочий стол\RfsGov\target\classes started by serik in C:\Users\sajtk\OneDrive\Рабочий стол\RfsGov)
+2025-11-16 00:55:03.859 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-16 00:55:03.908 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-16 00:55:03.909 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-16 00:55:05.759 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-16 00:55:05.833 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 65 ms. Found 11 JPA repository interfaces.
+2025-11-16 00:55:06.425 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-11-16 00:55:06.437 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-16 00:55:06.438 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-11-16 00:55:06.479 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-16 00:55:06.480 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2570 ms
+2025-11-16 00:55:06.593 [restartedMain] INFO  kz.gov.rfs.security.JwtUtil - JWT initialized successfully with HS512
+2025-11-16 00:55:07.098 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-16 00:55:07.127 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Starting...
+2025-11-16 00:55:07.314 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - RfsHikariPool - Added connection org.postgresql.jdbc.PgConnection@7e9f5e8b
+2025-11-16 00:55:07.316 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Start completed.
+2025-11-16 00:55:07.375 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-16 00:55:08.513 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-16 00:55:08.988 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-16 00:55:10.369 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-11-16 00:55:10.870 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-11-16 00:55:11.388 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-16 00:55:11.459 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-11-16 00:55:11.469 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - Started RfsGovApplication in 8.05 seconds (process running for 11.683)
+2025-11-16 00:55:11.598 [restartedMain] INFO  kz.gov.rfs.config.AdminInitializer - Admin user already exists, skipping initialization
+2025-11-16 00:56:15.209 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-16 00:59:44.203 [http-nio-8080-exec-7] WARN  o.s.d.w.c.SpringDataJacksonConfiguration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2025-11-16 01:19:45.030 [http-nio-8080-exec-9] INFO  kz.gov.rfs.service.AuthService - User admin logged in successfully
+2025-11-16 02:47:56.814 [RfsHikariPool:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - RfsHikariPool - Thread starvation or clock leap detected (housekeeper delta=3m47s923ms283µs200ns).
+2025-11-16 02:59:00.232 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-16 02:59:00.243 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-11-16 02:59:00.254 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-16 02:59:00.260 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Shutdown initiated...
+2025-11-16 02:59:00.262 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Shutdown completed.
