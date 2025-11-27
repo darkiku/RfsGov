@@ -13,25 +13,14 @@ import java.util.List;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
 
-    // Все активные новости
+    // Базовые запросы
     Page<News> findByIsActiveTrueOrderByPublishedDateDesc(Pageable pageable);
-
-    // Активные новости по типу - ИСПРАВЛЕНО!
     Page<News> findByIsActiveTrueAndNewsTypeOrderByPublishedDateDesc(NewsType newsType, Pageable pageable);
-
-    // Последние 5 новостей (все типы)
     List<News> findTop5ByIsActiveTrueOrderByPublishedDateDesc();
-
-    // Последние 5 новостей по типу
     List<News> findTop5ByIsActiveTrueAndNewsTypeOrderByPublishedDateDesc(NewsType newsType);
-
-    // Топ по просмотрам
     List<News> findTopByIsActiveTrueOrderByViewCountDesc(Pageable pageable);
-
-    // Количество активных новостей
     Long countByIsActive(Boolean isActive);
 
-    // Поиск по всем полям (все типы)
     @Query("SELECT n FROM News n WHERE n.isActive = true AND " +
             "(LOWER(n.titleRu) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(n.titleKk) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
@@ -45,7 +34,6 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             "ORDER BY n.publishedDate DESC")
     Page<News> searchNews(@Param("keyword") String keyword, Pageable pageable);
 
-    // Поиск по всем полям с типом
     @Query("SELECT n FROM News n WHERE n.isActive = true AND n.newsType = :newsType AND " +
             "(LOWER(n.titleRu) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(n.titleKk) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +

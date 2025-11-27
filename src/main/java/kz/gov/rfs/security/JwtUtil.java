@@ -28,14 +28,23 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
-        if (jwtSecret == null || jwtSecret.length() < 64) {
-            throw new IllegalStateException("JWT secret must be at least 64 characters (512 bits)");
+        if (jwtSecret == null || jwtSecret.trim().isEmpty()) {
+            throw new IllegalStateException("JWT_SECRET is not configured in environment variables");
+        }
+
+        if (jwtSecret.length() < 64) {
+            throw new IllegalStateException(
+                    String.format("JWT secret must be at least 64 characters (512 bits). Current length: %d", jwtSecret.length())
+            );
+        }
+        if (jwtSecret.equals("your-secret-key-here") || jwtSecret.equals("changeme")) {
+            throw new IllegalStateException("JWT secret must be changed from default value");
         }
 
         byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
         this.key = Keys.hmacShaKeyFor(keyBytes);
 
-        log.info("JWT initialized successfully with HS512");
+        log.info("✅ JWT initialized successfully with HS512 (key length: {} bytes)", keyBytes.length);
     }
 
     public String generateToken(Authentication authentication) {

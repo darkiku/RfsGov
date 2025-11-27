@@ -2,6 +2,7 @@ package kz.gov.rfs.config;
 
 import kz.gov.rfs.security.JwtAuthenticationFilter;
 import kz.gov.rfs.security.JwtAuthenticationEntryPoint;
+import kz.gov.rfs.security.RateLimitingFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final RateLimitingFilter rateLimitingFilter; // Новый фильтр
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
@@ -43,7 +45,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(auth -> auth
-                        // Публичные эндпоинты (чтение)
+                        // Публичные эндпоинты
                         .requestMatchers("/api/news/**", "/api/news/{id}/**").permitAll()
                         .requestMatchers("/api/services/**", "/api/services/{id}/**").permitAll()
                         .requestMatchers("/api/procurements/**", "/api/procurements/{id}/**").permitAll()
@@ -56,12 +58,10 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
 
-                        // Админские эндпоинты (управление пользователями)
+                        // Админские эндпоинты
                         .requestMatchers("/api/admin/users/**").hasAnyRole("ADMIN", "HR_MANAGER")
                         .requestMatchers("/api/admin/dashboard").hasAnyRole("ADMIN", "HR_MANAGER")
                         .requestMatchers("/api/admin/audit-logs/**").hasRole("ADMIN")
-
-                        // Все остальные админские запросы требуют аутентификации
                         .requestMatchers("/api/admin/**").authenticated()
 
                         .anyRequest().authenticated()
@@ -88,6 +88,8 @@ public class SecurityConfig {
                                 .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
                 )
                 .authenticationProvider(authenticationProvider())
+
+                .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
