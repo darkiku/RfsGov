@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @Order(1) // Запускается первым
 public class EnvironmentValidator implements CommandLineRunner {
 
-    @Value("${JWT_SECRET:}")
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${DB_PASSWORD:}")
+    @Value("${spring.datasource.password}")
     private String dbPassword;
 
-    @Value("${ADMIN_PASSWORD:}")
+    @Value("${admin.init.password}")
     private String adminPassword;
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
@@ -33,18 +33,21 @@ public class EnvironmentValidator implements CommandLineRunner {
         boolean hasErrors = false;
 
         // Проверка JWT_SECRET
-        if (jwtSecret.isEmpty() || jwtSecret.length() < 64) {
-            log.error("❌ JWT_SECRET is not set or too short (minimum 64 characters)");
+        if (jwtSecret == null || jwtSecret.trim().isEmpty()) {
+            log.error("❌ JWT_SECRET is not set");
+            hasErrors = true;
+        } else if (jwtSecret.length() < 64) {
+            log.error("❌ JWT_SECRET is too short (minimum 64 characters). Current length: {}", jwtSecret.length());
             hasErrors = true;
         } else if (jwtSecret.equals("your-secret-key-here") || jwtSecret.equals("changeme")) {
             log.error("❌ JWT_SECRET must be changed from default value");
             hasErrors = true;
         } else {
-            log.info("✅ JWT_SECRET configured correctly");
+            log.info("✅ JWT_SECRET configured correctly ({} characters)", jwtSecret.length());
         }
 
         // Проверка DB_PASSWORD
-        if (dbPassword.isEmpty()) {
+        if (dbPassword == null || dbPassword.trim().isEmpty()) {
             log.error("❌ DB_PASSWORD is not set");
             hasErrors = true;
         } else if (dbPassword.length() < 8) {
@@ -54,7 +57,7 @@ public class EnvironmentValidator implements CommandLineRunner {
         }
 
         // Проверка ADMIN_PASSWORD
-        if (adminPassword.isEmpty()) {
+        if (adminPassword == null || adminPassword.trim().isEmpty()) {
             log.error("❌ ADMIN_PASSWORD is not set");
             hasErrors = true;
         } else if (adminPassword.length() < 8) {
@@ -86,7 +89,7 @@ public class EnvironmentValidator implements CommandLineRunner {
         }
 
         if (hasErrors) {
-            log.error("❌❌❌ CONFIGURATION ERRORS DETECTED - APPLICATION SHOULD NOT START ❌❌❌");
+            log.error("❌❌❌ CONFIGURATION ERRORS DETECTED ❌❌❌");
             log.error("Please fix the errors above before running in production");
             throw new IllegalStateException("Critical configuration errors detected. Check logs above.");
         }

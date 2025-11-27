@@ -1,37 +1,65 @@
-2025-11-16 00:55:03.851 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - Starting RfsGovApplication using Java 24.0.2 with PID 4948 (C:\Users\sajtk\OneDrive\Рабочий стол\RfsGov\target\classes started by serik in C:\Users\sajtk\OneDrive\Рабочий стол\RfsGov)
-2025-11-16 00:55:03.859 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - No active profile set, falling back to 1 default profile: "default"
-2025-11-16 00:55:03.908 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2025-11-16 00:55:03.909 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2025-11-16 00:55:05.759 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-11-16 00:55:05.833 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 65 ms. Found 11 JPA repository interfaces.
-2025-11-16 00:55:06.425 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2025-11-16 00:55:06.437 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2025-11-16 00:55:06.438 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.48]
-2025-11-16 00:55:06.479 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2025-11-16 00:55:06.480 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2570 ms
-2025-11-16 00:55:06.593 [restartedMain] INFO  kz.gov.rfs.security.JwtUtil - JWT initialized successfully with HS512
-2025-11-16 00:55:07.098 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-11-16 00:55:07.127 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Starting...
-2025-11-16 00:55:07.314 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - RfsHikariPool - Added connection org.postgresql.jdbc.PgConnection@7e9f5e8b
-2025-11-16 00:55:07.316 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Start completed.
-2025-11-16 00:55:07.375 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-11-16 00:55:08.513 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-11-16 00:55:08.988 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
-2025-11-16 00:55:10.369 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2025-11-16 00:55:10.870 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
-2025-11-16 00:55:11.388 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
-2025-11-16 00:55:11.459 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
-2025-11-16 00:55:11.469 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - Started RfsGovApplication in 8.05 seconds (process running for 11.683)
-2025-11-16 00:55:11.598 [restartedMain] INFO  kz.gov.rfs.config.AdminInitializer - Admin user already exists, skipping initialization
-2025-11-16 00:56:15.209 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-11-16 00:59:44.203 [http-nio-8080-exec-7] WARN  o.s.d.w.c.SpringDataJacksonConfiguration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+2025-11-28 04:37:27.541 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - Starting RfsGovApplication using Java 24.0.2 with PID 15464 (C:\Users\sajtk\OneDrive\Рабочий стол\RfsGov\target\classes started by serik in C:\Users\sajtk\OneDrive\Рабочий стол\RfsGov)
+2025-11-28 04:37:27.548 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-28 04:37:27.640 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-28 04:37:27.641 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-28 04:37:30.611 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-28 04:37:30.725 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 102 ms. Found 11 JPA repository interfaces.
+2025-11-28 04:37:31.646 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-11-28 04:37:31.669 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-28 04:37:31.669 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-11-28 04:37:31.743 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-11-28 04:37:31.743 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4102 ms
+2025-11-28 04:37:31.920 [restartedMain] INFO  kz.gov.rfs.security.JwtUtil - ✅ JWT initialized successfully with HS512 (key length: 126 bytes)
+2025-11-28 04:37:32.709 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-28 04:37:32.749 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Starting...
+2025-11-28 04:37:33.164 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - RfsHikariPool - Added connection org.postgresql.jdbc.PgConnection@3420b165
+2025-11-28 04:37:33.167 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Start completed.
+2025-11-28 04:37:33.324 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-28 04:37:35.210 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-28 04:37:35.842 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-28 04:37:38.259 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-11-28 04:37:39.153 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-11-28 04:37:40.024 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-28 04:37:40.162 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-11-28 04:37:40.180 [restartedMain] INFO  kz.gov.rfs.RfsGovApplication - Started RfsGovApplication in 13.265 seconds (process running for 17.684)
+2025-11-28 04:37:40.199 [restartedMain] INFO  k.g.rfs.config.EnvironmentValidator - 🔍 Validating environment configuration...
+2025-11-28 04:37:40.199 [restartedMain] INFO  k.g.rfs.config.EnvironmentValidator - ✅ JWT_SECRET configured correctly (126 characters)
+2025-11-28 04:37:40.199 [restartedMain] WARN  k.g.rfs.config.EnvironmentValidator - ⚠️ DB_PASSWORD is too short (recommended minimum 12 characters)
+2025-11-28 04:37:40.200 [restartedMain] INFO  k.g.rfs.config.EnvironmentValidator - ✅ ADMIN_PASSWORD configured
+2025-11-28 04:37:40.200 [restartedMain] INFO  k.g.rfs.config.EnvironmentValidator - ✅ Hibernate DDL mode: validate
+2025-11-28 04:37:40.200 [restartedMain] INFO  k.g.rfs.config.EnvironmentValidator - ✅ SQL logging disabled
+2025-11-28 04:37:40.200 [restartedMain] INFO  k.g.rfs.config.EnvironmentValidator - ✅ All environment variables validated successfully
+2025-11-28 04:37:40.310 [scheduling-1] INFO  k.g.rfs.config.TokenCleanupScheduler - 🧹 Periodic cleanup: removed 1 expired tokens
+2025-11-28 04:37:40.400 [restartedMain] INFO  kz.gov.rfs.config.AdminInitializer - Admin user already exists, skipping initialization
+2025-11-28 04:39:21.168 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-28 04:39:21.637 [http-nio-8080-exec-1] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038074630 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:39:21.630Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:39:22.074 [http-nio-8080-exec-5] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038075074 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:39:22.074Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:39:22.076 [http-nio-8080-exec-4] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038075074 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:39:22.074Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:39:22.136 [http-nio-8080-exec-9] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038075136 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:39:22.136Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:39:22.138 [http-nio-8080-exec-3] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038075138 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:39:22.138Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:39:22.199 [http-nio-8080-exec-6] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038075199 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:39:22.199Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:30.804 [http-nio-8080-exec-7] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038143804 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:30.804Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:30.844 [http-nio-8080-exec-7] WARN  o.s.d.w.c.SpringDataJacksonConfiguration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
 	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
 	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
 
-2025-11-16 01:19:45.030 [http-nio-8080-exec-9] INFO  kz.gov.rfs.service.AuthService - User admin logged in successfully
-2025-11-16 02:47:56.814 [RfsHikariPool:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - RfsHikariPool - Thread starvation or clock leap detected (housekeeper delta=3m47s923ms283µs200ns).
-2025-11-16 02:59:00.232 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2025-11-16 02:59:00.243 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
-2025-11-16 02:59:00.254 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-11-16 02:59:00.260 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Shutdown initiated...
-2025-11-16 02:59:00.262 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - RfsHikariPool - Shutdown completed.
+2025-11-28 04:40:30.868 [http-nio-8080-exec-8] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038143868 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:30.868Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:31.857 [http-nio-8080-exec-6] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038144856 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:31.856Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:32.925 [http-nio-8080-exec-2] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038145925 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:32.925Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:32.947 [http-nio-8080-exec-7] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038145947 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:32.947Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:32.949 [http-nio-8080-exec-8] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038145949 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:32.949Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:32.966 [http-nio-8080-exec-3] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038145966 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:32.966Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:32.969 [http-nio-8080-exec-1] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038145969 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:32.969Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:32.983 [http-nio-8080-exec-5] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038145983 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:32.983Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:36.195 [http-nio-8080-exec-10] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038149195 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:36.195Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:36.223 [http-nio-8080-exec-4] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038149223 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:36.223Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:36.696 [http-nio-8080-exec-9] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038149695 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:36.695Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:36.731 [http-nio-8080-exec-6] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038149731 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:36.731Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:38.483 [http-nio-8080-exec-2] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038151483 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:38.483Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:38.510 [http-nio-8080-exec-8] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038151510 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:38.510Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:41.054 [http-nio-8080-exec-7] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038154054 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:41.054Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:41.073 [http-nio-8080-exec-1] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038154073 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:41.073Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:41.076 [http-nio-8080-exec-3] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038154076 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:41.076Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:41.096 [http-nio-8080-exec-5] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038154096 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:41.096Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:41.096 [http-nio-8080-exec-10] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038154096 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:41.096Z. Allowed clock skew: 0 milliseconds.
+2025-11-28 04:40:41.113 [http-nio-8080-exec-4] ERROR kz.gov.rfs.security.JwtUtil - JWT token is expired: JWT expired 1038154113 milliseconds ago at 2025-11-15T23:18:07.000Z. Current time: 2025-11-27T23:40:41.113Z. Allowed clock skew: 0 milliseconds.
