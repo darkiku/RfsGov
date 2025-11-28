@@ -84,14 +84,6 @@ public class AuthService {
 
         } catch (BadCredentialsException e) {
             handleFailedLogin(username);
-
-
-
-
-
-
-
-
             log.warn("Invalid credentials for user: {}", username);
             throw new BadCredentialsException("Invalid username or password");
         } catch (LockedException e) {
@@ -134,29 +126,42 @@ public class AuthService {
     @Transactional
     public String createRefreshToken(User user) {
         try {
-            refreshTokenRepository.deleteByUser(user);
-            log.debug("Deleted old refresh token for user: {}", user.getUsername());
+            int deletedCount = refreshTokenRepository.deleteByUserId(user.getId());
+            if (deletedCount > 0) {
+                log.debug("Deleted {} old refresh token(s) for user: {}", deletedCount, user.getUsername());
+            }
         } catch (Exception e) {
-            log.warn("No old refresh token found for user: {}", user.getUsername());
+            log.warn("Error deleting old refresh tokens for user {}: {}", user.getUsername(), e.getMessage());
         }
 
+        // Создаем новый токен
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(user);
         refreshToken.setToken(UUID.randomUUID().toString());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDuration));
 
-        refreshTokenRepository.save(refreshToken);
-        log.debug("Created new refresh token for user: {}", user.getUsername());
+        RefreshToken savedToken = refreshTokenRepository.save(refreshToken);
+        log.debug("Created new refresh token for user: {}, expires at: {}",
+                user.getUsername(), savedToken.getExpiryDate());
 
-        return refreshToken.getToken();
+        return savedToken.getToken();
     }
 
     @Transactional
     public AuthResponse refreshToken(String token) {
+        log.debug("Attempting to refresh token: {}", token.substring(0, Math.min(8, token.length())) + "...");
+
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                .orElseThrow(() -> {
+                    log.error("Refresh token not found in database");
+                    return new RuntimeException("Invalid refresh token");
+                });
+
+        log.debug("Found refresh token for user: {}, expires at: {}",
+                refreshToken.getUser().getUsername(), refreshToken.getExpiryDate());
 
         if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
+            log.error("Refresh token expired for user: {}", refreshToken.getUser().getUsername());
             refreshTokenRepository.delete(refreshToken);
             throw new RuntimeException("Refresh token expired. Please login again");
         }
@@ -164,16 +169,20 @@ public class AuthService {
         User user = refreshToken.getUser();
 
         if (!user.getIsActive()) {
+            log.error("User account is disabled: {}", user.getUsername());
             throw new RuntimeException("Account is disabled");
         }
 
         String newAccessToken = jwtUtil.generateTokenFromUsername(user.getUsername());
 
-        log.info("Token refreshed for user {}", user.getUsername());
+        refreshTokenRepository.delete(refreshToken);
+        String newRefreshToken = createRefreshToken(user);
+
+        log.info("Token refreshed successfully for user {}", user.getUsername());
 
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
-                .refreshToken(token)
+                .refreshToken(newRefreshToken)
                 .userId(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
@@ -188,7 +197,10 @@ public class AuthService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        refreshTokenRepository.deleteByUser(user);
+        int deletedCount = refreshTokenRepository.deleteByUserId(user.getId());
+        if (deletedCount > 0) {
+            log.debug("Deleted {} refresh token(s) for user: {}", deletedCount, username);
+        }
 
         loginAttempts.remove(username);
         lockoutTime.remove(username);
