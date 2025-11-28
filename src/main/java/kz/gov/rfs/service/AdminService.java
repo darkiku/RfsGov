@@ -50,7 +50,6 @@ public class AdminService {
         User user = getUserById(id);
         user.setFullName(userDetails.getFullName());
 
-        // Проверка на уникальность email при изменении
         if (!user.getEmail().equals(userDetails.getEmail())
                 && userRepository.existsByEmail(userDetails.getEmail())) {
             throw new RuntimeException("Email already exists");
@@ -75,12 +74,13 @@ public class AdminService {
         User user = getUserById(id);
         user.setIsActive(!user.getIsActive());
 
-        // ИСПРАВЛЕНИЕ: при деактивации пользователя удаляем его refresh token
+        // ИСПРАВЛЕНО: правильное удаление токена при деактивации
         if (!user.getIsActive()) {
-            int deletedCount = refreshTokenRepository.deleteByUserId(user.getId());
-            if (deletedCount > 0) {
-                log.info("Deleted {} refresh token(s) for deactivated user: {}", deletedCount, user.getUsername());
-            }
+            User finalUser = user;
+            refreshTokenRepository.findByUser(user).ifPresent(token -> {
+                refreshTokenRepository.delete(token);
+                log.info("Deleted refresh token for deactivated user: {}", finalUser.getUsername());
+            });
         }
 
         return userRepository.save(user);
@@ -90,11 +90,12 @@ public class AdminService {
     public void deleteUser(Long id) {
         User user = getUserById(id);
 
-        // ИСПРАВЛЕНИЕ: перед удалением пользователя удаляем его refresh token
-        int deletedCount = refreshTokenRepository.deleteByUserId(user.getId());
-        if (deletedCount > 0) {
-            log.info("Deleted {} refresh token(s) for user being deleted: {}", deletedCount, user.getUsername());
-        }
+        // ИСПРАВЛЕНО: удаляем токен перед удалением пользователя
+        User finalUser = user;
+        refreshTokenRepository.findByUser(user).ifPresent(token -> {
+            refreshTokenRepository.delete(token);
+            log.info("Deleted refresh token for user being deleted: {}", finalUser.getUsername());
+        });
 
         userRepository.deleteById(id);
     }
@@ -103,7 +104,6 @@ public class AdminService {
     public User changePassword(Long id, String newPassword) {
         log.info("Attempting to change password for user ID: {}", id);
 
-        // Валидация пароля
         if (newPassword == null || newPassword.trim().isEmpty()) {
             throw new IllegalArgumentException("Пароль не может быть пустым");
         }
@@ -112,27 +112,25 @@ public class AdminService {
             throw new IllegalArgumentException("Пароль должен содержать минимум 8 символов");
         }
 
-        // КРИТИЧЕСКАЯ ВАЛИДАЦИЯ: пароль должен содержать буквы И цифры
         if (!newPassword.matches("^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$")) {
             throw new IllegalArgumentException("Пароль должен содержать минимум 8 символов, включая буквы и цифры");
         }
 
         User user = getUserById(id);
 
-        // Хешируем новый пароль
         String newPasswordHash = passwordEncoder.encode(newPassword);
         user.setPassword(newPasswordHash);
 
         User savedUser = userRepository.save(user);
 
-        // ИСПРАВЛЕНИЕ: после смены пароля удаляем все refresh токены ТОЛЬКО этого пользователя
-        // НЕ ТРОГАЕМ токены текущего админа!
-        int deletedCount = refreshTokenRepository.deleteByUserId(user.getId());
-        if (deletedCount > 0) {
-            log.info("Deleted {} refresh token(s) for user after password change: {}", deletedCount, user.getUsername());
-        }
+        // ИСПРАВЛЕНО: правильное удаление токена после смены пароля
+        User finalUser = savedUser;
+        refreshTokenRepository.findByUser(savedUser).ifPresent(token -> {
+            refreshTokenRepository.delete(token);
+            log.info("Deleted refresh token after password change for user: {}", finalUser.getUsername());
+        });
 
-        log.info("Password changed successfully for user: {}", user.getUsername());
+        log.info("Password changed successfully for user: {}", savedUser.getUsername());
 
         return savedUser;
     }

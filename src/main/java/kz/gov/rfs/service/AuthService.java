@@ -17,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -40,13 +41,13 @@ public class AuthService {
 
     private final Map<String, Integer> loginAttempts = new ConcurrentHashMap<>();
     private final Map<String, Instant> lockoutTime = new ConcurrentHashMap<>();
-    private static final int MAX_ATTEMPTS = 5;
-    private static final long LOCKOUT_DURATION_MINUTES = 15;
+
+    private static final int MAX_ATTEMPTS = 10;
+    private static final long LOCKOUT_DURATION_MINUTES = 5;
 
     @Transactional
     public AuthResponse login(AuthRequest request) {
         String username = request.getUsername();
-
         checkLoginAttempts(username);
 
         try {
@@ -64,13 +65,15 @@ public class AuthService {
             userRepository.save(user);
 
             String accessToken = jwtUtil.generateToken(authentication);
-            String refreshToken = createRefreshToken(user);
+
+            log.info("🔑 Creating refresh token for user: {}", username);
+            String refreshToken = createRefreshTokenSeparate(user.getId());
+            log.info("✅ Refresh token created successfully");
 
             loginAttempts.remove(username);
             lockoutTime.remove(username);
 
             auditLogService.log(user, "LOGIN", "User", user.getId(), "User logged in successfully");
-
             log.info("User {} logged in successfully", username);
 
             return AuthResponse.builder()
@@ -99,9 +102,11 @@ public class AuthService {
         if (lockoutTime.containsKey(username)) {
             Instant lockout = lockoutTime.get(username);
             if (Instant.now().isBefore(lockout)) {
-                long minutesLeft = (lockout.toEpochMilli() - Instant.now().toEpochMilli()) / 60000;
-                log.warn("Account {} is locked. Minutes left: {}", username, minutesLeft);
-                throw new LockedException("Account locked. Try again in " + minutesLeft + " minutes");
+                long secondsLeft = (lockout.toEpochMilli() - Instant.now().toEpochMilli()) / 1000;
+                log.warn("Account {} is locked. Seconds left: {}", username, secondsLeft);
+                throw new LockedException(String.format(
+                        "Too many failed attempts. Please try again in %d seconds", secondsLeft
+                ));
             } else {
                 log.info("Lockout expired for user: {}, clearing attempts", username);
                 loginAttempts.remove(username);
@@ -113,7 +118,6 @@ public class AuthService {
     private void handleFailedLogin(String username) {
         int attempts = loginAttempts.getOrDefault(username, 0) + 1;
         loginAttempts.put(username, attempts);
-
         log.warn("Failed login attempt {} for user {}", attempts, username);
 
         if (attempts >= MAX_ATTEMPTS) {
@@ -123,35 +127,45 @@ public class AuthService {
         }
     }
 
-    @Transactional
-    public String createRefreshToken(User user) {
+    /**
+     * КРИТИЧЕСКИ ВАЖНО: Создание токена в ОТДЕЛЬНОЙ транзакции
+     * Это гарантирует, что токен сохранится даже если основная транзакция откатится
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public String createRefreshTokenSeparate(Long userId) {
+        log.info("📝 Starting token creation for user ID: {}", userId);
+
+        // Удаляем старый токен если есть
         try {
-            int deletedCount = refreshTokenRepository.deleteByUserId(user.getId());
-            if (deletedCount > 0) {
-                log.debug("Deleted {} old refresh token(s) for user: {}", deletedCount, user.getUsername());
-            }
+            int deleted = refreshTokenRepository.deleteByUserId(userId);
+            log.info("Deleted {} old tokens for user {}", deleted, userId);
         } catch (Exception e) {
-            log.warn("Error deleting old refresh tokens for user {}: {}", user.getUsername(), e.getMessage());
+            log.warn("Error deleting old token: {}", e.getMessage());
         }
 
+        // Получаем свежего пользователя из базы
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found: " + userId));
+
         // Создаем новый токен
-        RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUser(user);
-        refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDuration));
+        RefreshToken token = new RefreshToken();
+        token.setUser(user);
+        token.setToken(UUID.randomUUID().toString());
+        token.setExpiryDate(Instant.now().plusMillis(refreshTokenDuration));
 
-        RefreshToken savedToken = refreshTokenRepository.save(refreshToken);
-        log.debug("Created new refresh token for user: {}, expires at: {}",
-                user.getUsername(), savedToken.getExpiryDate());
+        RefreshToken saved = refreshTokenRepository.saveAndFlush(token);
 
-        return savedToken.getToken();
+        log.info("✅ Token saved with ID: {}, token: {}", saved.getId(), saved.getToken().substring(0, 8) + "...");
+
+        return saved.getToken();
     }
 
     @Transactional
     public AuthResponse refreshToken(String token) {
         log.debug("Attempting to refresh token: {}", token.substring(0, Math.min(8, token.length())) + "...");
 
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
+        // PESSIMISTIC LOCK: блокирует токен для других транзакций
+        RefreshToken refreshToken = refreshTokenRepository.findByTokenWithLock(token)
                 .orElseThrow(() -> {
                     log.error("Refresh token not found in database");
                     return new RuntimeException("Invalid refresh token");
@@ -175,8 +189,11 @@ public class AuthService {
 
         String newAccessToken = jwtUtil.generateTokenFromUsername(user.getUsername());
 
+        // Удаляем старый токен (уже заблокирован, никто другой не может его трогать)
         refreshTokenRepository.delete(refreshToken);
-        String newRefreshToken = createRefreshToken(user);
+        refreshTokenRepository.flush();
+
+        String newRefreshToken = createRefreshTokenSeparate(user.getId());
 
         log.info("Token refreshed successfully for user {}", user.getUsername());
 
@@ -197,16 +214,15 @@ public class AuthService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        int deletedCount = refreshTokenRepository.deleteByUserId(user.getId());
-        if (deletedCount > 0) {
-            log.debug("Deleted {} refresh token(s) for user: {}", deletedCount, username);
-        }
+        refreshTokenRepository.findByUser(user).ifPresent(token -> {
+            refreshTokenRepository.delete(token);
+            log.debug("Deleted refresh token for user: {}", username);
+        });
 
         loginAttempts.remove(username);
         lockoutTime.remove(username);
 
         auditLogService.log(user, "LOGOUT", "User", user.getId(), "User logged out");
-
         log.info("User {} logged out successfully", username);
     }
 
